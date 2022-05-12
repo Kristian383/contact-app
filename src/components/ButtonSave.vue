@@ -29,7 +29,7 @@ export default {};
   border-radius: 100px;
 }
 .button-container button:before {
-  content: "Save";
+  content: "Add";
   position: absolute;
   top: 50%;
   left: 50%;

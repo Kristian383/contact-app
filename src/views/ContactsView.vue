@@ -1,20 +1,18 @@
 <template>
   <div class="container">
     <h2>My Contacts</h2>
-    <!-- <button @click="">Add contact</button> -->
     <router-link class="add-btn" to="/add">Add contact</router-link>
     <!-- <div class="container-header">
       <input type="text" />
     </div> -->
-    <div class="contacts-list" v-if="contactsList">
-      <!-- <div v-for="item in 3" :key="item">Contact item</div> -->
+    <div class="contacts-list">
       <the-contact
         v-for="contact in contactsList"
         :key="contact"
         :contact="contact"
       ></the-contact>
     </div>
-    <p v-else>No contacts...</p>
+    <!-- <p v-else>No contacts...</p> -->
   </div>
 </template>
 
@@ -28,7 +26,7 @@ export default {
     TheContact,
   },
   setup() {
-    // const contactsList = ref([]);
+    // const contactsAreEmpty = ref(true);
 
     const store = useStore();
 
@@ -36,16 +34,21 @@ export default {
       return store.getters.getContacts;
     });
 
-    console.log("tu", contactsList);
-
     onMounted(() => {
       // dispatch action to api
       store.dispatch("loadContactsFromApi");
-      // console.log("");
+      // .then((res) => {
+      //   if (!res) {
+      //     contactsAreEmpty.value = true;
+      //   } else {
+      //     contactsAreEmpty.value = false;
+      //   }
+      // });
     });
 
     return {
       contactsList,
+      // contactsAreEmpty,
     };
   },
 };

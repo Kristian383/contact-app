@@ -2,8 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import ContactsView from "../views/ContactsView.vue";
 
 const routes = [
+  { path: "/", redirect: "/contacts" },
   {
-    path: "/",
+    path: "/contacts",
     name: "home",
     component: ContactsView,
   },

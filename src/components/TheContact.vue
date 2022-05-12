@@ -34,14 +34,16 @@
 import DeleteModal from "../components/DeleteModal.vue";
 
 import { ref, computed } from "vue";
+import { useStore } from "vuex";
+
 export default {
   components: {
     DeleteModal,
   },
   props: ["contact"],
   setup(props) {
-    console.log(props.contact);
     const showDeleteModal = ref(false);
+    const store = useStore();
 
     const fullName = computed(() => {
       return props.contact.first_name + " " + props.contact.last_name;
@@ -54,11 +56,28 @@ export default {
     function openDeleteModal() {
       showDeleteModal.value = true;
     }
+
+    function submitDeleteRequest() {
+      store
+        .dispatch("deleteContact", {
+          email: props.contact.email,
+          first_name: props.contact.first_name,
+          last_name: props.contact.last_name,
+          phone: props.contact.phone_number,
+        })
+        .then((res) => {
+          showDeleteModal.value = false;
+          if (res === false) {
+            alert("Something went wrong. Please try again.");
+          }
+        });
+    }
     return {
       fullName,
       showDeleteModal,
       closeDeleteModal,
       openDeleteModal,
+      submitDeleteRequest,
     };
   },
 };
