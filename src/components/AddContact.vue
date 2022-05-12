@@ -21,7 +21,12 @@
 
       <div class="input-group">
         <label for="last">Email</label>
-        <input type="email" id="email" v-model.trim="email" />
+        <input
+          type="email"
+          id="email"
+          v-model.trim="email"
+          :disabled="editMode"
+        />
         <p class="error-text" v-if="!emailIsValid">
           Please insert less than 80 characters.
         </p>
@@ -43,7 +48,7 @@
 
 <script>
 import ButtonSave from "./ButtonSave.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
@@ -96,25 +101,50 @@ export default {
       return false;
     }
 
+    const editMode = ref(router.currentRoute.value.params.email ? true : false);
+
     async function addContact() {
       if (validateForm() === false) {
-        console.log("not valid");
+        // console.log("not valid");
         return;
       }
+
+      // let editMode = router.currentRoute.value.params.email ? true : false;
+      // console.log(editMode);
+
       const payload = {
         first_name: firstName.value,
         last_name: lastName.value,
         email: email.value,
         phone: phoneNumber.value,
+        editMode: editMode.value,
       };
 
       store.dispatch("addContact", payload).then((res) => {
-        console.log(res);
         if (res) {
           router.push("/contacts");
+        } else {
+          alert("Looks like contact with that email already exists!");
         }
       });
     }
+
+    onMounted(() => {
+      const emailData = router.currentRoute.value.params.email;
+
+      if (!emailData) {
+        return;
+      }
+
+      const contactData = store.getters.getContact(emailData);
+      if (!contactData) return;
+      // console.log(contactData);
+
+      firstName.value = contactData.first_name;
+      lastName.value = contactData.last_name;
+      email.value = contactData.email;
+      phoneNumber.value = contactData.phone_number;
+    });
 
     return {
       firstName,
@@ -127,6 +157,7 @@ export default {
       emailIsValid,
       phoneNumberIsValid,
       addContact,
+      editMode,
     };
   },
 };

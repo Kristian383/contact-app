@@ -10,14 +10,20 @@ const store = createStore({
     getContacts(state) {
       return state.contacts;
     },
+    // getContact(state, email) {
+    //   return state.contacts.find((contact) => contact.email === email);
+    // },
+    getContact: (state) => (email) => {
+      return state.contacts.find((contact) => contact.email === email);
+    },
   },
   mutations: {
     loadContactsFromApi(state, payload) {
       state.contacts = payload;
     },
-    removeContact(state, id) {
+    removeContact(state, email) {
       let index;
-      index = state.contacts.findIndex((song) => song.songId == id);
+      index = state.contacts.findIndex((contact) => contact.email === email);
       state.contacts.splice(index, 1);
     },
   },
@@ -51,21 +57,22 @@ const store = createStore({
     async addContact(_, payload) {
       let url = new URL(`/contact`, "http://192.168.1.5:5000");
       let response;
-      console.log(JSON.stringify(payload));
+
+      const { editMode, ...body } = payload;
+      let method = editMode === true ? "PUT" : "POST";
       try {
         response = await fetch(url, {
-          method: "POST",
+          method: method,
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(body),
         });
       } catch {
         console.log("There was an error!");
         return false;
       }
-
-      if (!response.ok) {
+      if (response.status === 400) {
         return false;
       }
 
@@ -73,7 +80,7 @@ const store = createStore({
       // console.log(responseData);
       return responseData;
     },
-    async deleteContact(_, payload) {
+    async deleteContact(context, payload) {
       let url = new URL(`/contact`, "http://192.168.1.5:5000");
       let response;
 
@@ -95,6 +102,7 @@ const store = createStore({
       }
 
       const responseData = await response.json();
+      context.commit("removeContact", payload.email);
       // console.log(responseData);
       return responseData;
     },

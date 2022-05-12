@@ -12,7 +12,7 @@
         }}
       </div>
       <span class="edit-btn"
-        ><font-awesome-icon class="icon" icon="edit"
+        ><font-awesome-icon class="icon" icon="edit" @click="openEditContact"
       /></span>
       <span class="remove-btn" @click="openDeleteModal">
         <font-awesome-icon class="icon" icon="trash" />
@@ -25,6 +25,7 @@
         v-if="showDeleteModal"
         @close-modal="closeDeleteModal"
         @send-delete="submitDeleteRequest"
+        :contact="contact.first_name + ' ' + contact.last_name"
       ></delete-modal>
     </transition>
   </div>
@@ -35,6 +36,7 @@ import DeleteModal from "../components/DeleteModal.vue";
 
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default {
   components: {
@@ -44,6 +46,7 @@ export default {
   setup(props) {
     const showDeleteModal = ref(false);
     const store = useStore();
+    const router = useRouter();
 
     const fullName = computed(() => {
       return props.contact.first_name + " " + props.contact.last_name;
@@ -72,12 +75,18 @@ export default {
           }
         });
     }
+
+    function openEditContact() {
+      router.push("/add/" + props.contact.email);
+    }
+
     return {
       fullName,
       showDeleteModal,
       closeDeleteModal,
       openDeleteModal,
       submitDeleteRequest,
+      openEditContact,
     };
   },
 };

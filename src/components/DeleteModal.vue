@@ -8,7 +8,7 @@
             class="trash-icon"
           ></font-awesome-icon
         ></span>
-        <h3>Delete contact? propname</h3>
+        <h3>Delete contact - {{ contact }}?</h3>
       </div>
       <div class="modal-body">
         <p>
@@ -25,6 +25,7 @@
 
 <script>
 export default {
+  props: ["contact"],
   emits: ["closeModal", "send-delete"],
   methods: {
     closeDeleteModal() {

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import ContactsView from "../views/ContactsView.vue";
+// import AddContact from "../components/AddContact.vue";
 
 const routes = [
   { path: "/", redirect: "/contacts" },
@@ -10,10 +11,14 @@ const routes = [
   },
   {
     path: "/add",
-    name: "add",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    name: "Add Contact",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../components/AddContact.vue"),
+  },
+  {
+    path: "/add/:email",
+    name: "Edit Contact",
+    props: true,
     component: () =>
       import(/* webpackChunkName: "about" */ "../components/AddContact.vue"),
   },
