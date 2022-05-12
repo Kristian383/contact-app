@@ -24,7 +24,7 @@ export default {};
   margin: 0 auto;
   color: #fff;
   outline: none;
-  background-color: #6fc982;
+  background-color: #4f92ff;
   border: 2px #1abc9c;
   border-radius: 100px;
 }
