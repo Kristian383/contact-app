@@ -1,6 +1,7 @@
 # contact-app
 
 This is a simple CRUD phonebook app in the form of RESTApi + SPA(Single page application) 
+This repository is for frontend, backend is visibile here: https://github.com/Kristian383/contact-app-backend
 
 Application description:
 Phonebook with the functions of entering, viewing, editing and deleting contacts containing name, surname, email and telephone number.
