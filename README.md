@@ -11,6 +11,8 @@ Tech:
 - REST API -> Python Flask
 - Frontend -> Vue 3 + SCSS
 
+For this to work, you first need to start the backend code.
+
 ## Project setup
 ```
 npm install
