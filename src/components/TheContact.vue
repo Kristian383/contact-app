@@ -1,5 +1,5 @@
 <template>
-  <div class="contact-container" @click="toggleExpand">
+  <div class="contact-container">
     <img src="../assets/user.png" alt="" />
     <div class="contact-info">
       <div><font-awesome-icon class="icon" icon="user" /> {{ fullName }}</div>
